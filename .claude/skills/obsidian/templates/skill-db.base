@@ -1,0 +1,68 @@
+filters:
+  and:
+    - file.inFolder("スキル一覧")
+    - file.ext == "md"
+    - note.type == "skill"
+properties:
+  file.name:
+    displayName: スキル
+  note.category:
+    displayName: カテゴリ
+  note.summary:
+    displayName: ひとこと
+  note.trigger:
+    displayName: 発動ワード
+  note.status:
+    displayName: 状態
+  note.updated:
+    displayName: 更新日
+  note.agents:
+    displayName: エージェント
+views:
+  - type: table
+    name: 一覧
+    limit: 120
+    columnSize:
+      file.name: 175
+      note.category: 145
+      note.summary: 290
+      note.status: 70
+    order:
+      - file.name
+      - note.category
+      - note.summary
+      - note.status
+    sort:
+      - property: note.category
+        direction: ASC
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: カテゴリ別
+    limit: 120
+    columnSize:
+      file.name: 175
+      note.summary: 285
+      note.trigger: 230
+      note.status: 70
+    groupBy:
+      property: note.category
+      direction: ASC
+    order:
+      - file.name
+      - note.summary
+      - note.trigger
+      - note.status
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: cards
+    name: カード
+    order:
+      - file.name
+      - note.category
+      - note.summary
+      - note.status
+    sort:
+      - property: note.category
+        direction: ASC
