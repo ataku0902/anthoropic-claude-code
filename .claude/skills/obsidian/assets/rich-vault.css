@@ -1,0 +1,228 @@
+/* ============================================================
+   rich-vault.css — Obsidian vault 共通デザインスニペット
+   場所: <vault>/.obsidian/snippets/rich-vault.css
+   有効化: 設定 → 外観 → CSSスニペット、または appearance.json の enabledCssSnippets
+   原本: ~/.claude/skills/obsidian/assets/rich-vault.css（直すときは原本→コピー）
+   ============================================================ */
+
+/* ---------- カラートークン ---------- */
+body {
+  --kv-blue: #2563eb;
+  --kv-green: #16a34a;
+  --kv-amber: #d97706;
+  --kv-red: #dc2626;
+  --kv-purple: #7c3aed;
+  --kv-teal: #0d9488;
+  --kv-pink: #db2777;
+  --kv-gray: #6b7280;
+}
+
+/* ---------- カスタムcallout ----------
+   > [!skill]    スキルの要約（青・スパークル）
+   > [!trigger]  発動ワード（紫・メガホン）
+   > [!flow]     処理の流れ（ティール・ワークフロー）
+   > [!path]     ファイルの場所（グレー・フォルダ）
+   > [!secret]   パスワード等・取り扱い注意（赤・鍵）
+   > [!agent]    関連エージェント（ピンク・ボット）
+   > [!rule]     恒久ルール（アンバー・盾）
+   > [!step]     手順ブロック（青・リスト）
+   > [!result]   成果物・出力（緑・パッケージ）
+   > [!kb]       ナレッジ・学び（紫・電球）
+------------------------------------------------ */
+.callout[data-callout="skill"]   { --callout-color: 37, 99, 235;   --callout-icon: lucide-sparkles; }
+.callout[data-callout="trigger"] { --callout-color: 124, 58, 237;  --callout-icon: lucide-megaphone; }
+.callout[data-callout="flow"]    { --callout-color: 13, 148, 136;  --callout-icon: lucide-workflow; }
+.callout[data-callout="path"]    { --callout-color: 107, 114, 128; --callout-icon: lucide-folder-open; }
+.callout[data-callout="secret"]  { --callout-color: 220, 38, 38;   --callout-icon: lucide-key-round; }
+.callout[data-callout="agent"]   { --callout-color: 219, 39, 119;  --callout-icon: lucide-bot; }
+.callout[data-callout="rule"]    { --callout-color: 217, 119, 6;   --callout-icon: lucide-shield-check; }
+.callout[data-callout="step"]    { --callout-color: 37, 99, 235;   --callout-icon: lucide-list-ordered; }
+.callout[data-callout="result"]  { --callout-color: 22, 163, 74;   --callout-icon: lucide-package-check; }
+.callout[data-callout="kb"]      { --callout-color: 124, 58, 237;  --callout-icon: lucide-lightbulb; }
+
+/* calloutのタイトルを少し太く・本文の余白を詰める */
+.callout .callout-title { font-weight: 700; }
+.callout .callout-content > :first-child { margin-top: .35em; }
+.callout .callout-content > :last-child { margin-bottom: .35em; }
+
+/* ---------- 共通ドキュメント装飾（cssclasses: rich-doc） ---------- */
+.rich-doc h1 {
+  padding-bottom: .25em;
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(90deg, var(--kv-blue), var(--kv-teal) 60%, transparent) 1;
+}
+.rich-doc h2 {
+  border-left: 5px solid var(--kv-blue);
+  padding-left: .55em;
+  margin-top: 1.6em;
+}
+.rich-doc h3 {
+  color: var(--kv-blue);
+}
+.rich-doc h3::before {
+  content: "▸ ";
+  opacity: .6;
+}
+
+/* フォルダ別のH2アクセント色 */
+.skill-page h2   { border-left-color: var(--kv-blue); }
+.codex-page h2   { border-left-color: var(--kv-teal); }
+.manual-page h2  { border-left-color: var(--kv-green); }
+.secret-page h2  { border-left-color: var(--kv-red); }
+.style-page h2   { border-left-color: var(--kv-purple); }
+.mail-page h2    { border-left-color: var(--kv-amber); }
+.index-page h2   { border-left-color: var(--kv-purple); }
+.skill-page h3, .index-page h3 { color: var(--kv-blue); }
+.codex-page h3   { color: var(--kv-teal); }
+.manual-page h3  { color: var(--kv-green); }
+.secret-page h3  { color: var(--kv-red); }
+.style-page h3   { color: var(--kv-purple); }
+.mail-page h3    { color: var(--kv-amber); }
+
+/* ---------- テーブル ---------- */
+.rich-doc table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+.rich-doc thead th {
+  background: var(--background-secondary);
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+}
+.rich-doc tbody tr:nth-child(even) { background: var(--background-primary-alt); }
+.rich-doc tbody tr:hover { background: var(--background-modifier-hover); }
+.rich-doc td:first-child { font-weight: 600; white-space: nowrap; }
+.rich-doc td, .rich-doc th { padding: .45em .7em; vertical-align: top; }
+
+/* ---------- インラインコード（パスワード・パス）を見やすく ---------- */
+.rich-doc code:not(pre code) {
+  padding: .1em .4em;
+  border-radius: 4px;
+  font-size: .92em;
+}
+.secret-page code:not(pre code) {
+  background: rgba(220, 38, 38, .08);
+  color: var(--kv-red);
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+/* ---------- kbd ---------- */
+.rich-doc kbd {
+  display: inline-block;
+  padding: .05em .45em;
+  border: 1px solid var(--background-modifier-border);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--background-secondary);
+  font-family: var(--font-monospace);
+  font-size: .85em;
+}
+
+/* ---------- progress ---------- */
+.rich-doc progress {
+  width: 160px;
+  height: 10px;
+  vertical-align: middle;
+  accent-color: var(--kv-blue);
+}
+
+/* ---------- チェックリストの完了行を薄く ---------- */
+.rich-doc .task-list-item.is-checked { opacity: .55; }
+
+/* ---------- カテゴリタグの色（本文内 #cat/xxx） ---------- */
+a.tag[href="#cat/wordpress"]  { color: #1d4ed8; background: #1d4ed81a; }
+a.tag[href="#cat/document"]   { color: #2563eb; background: #2563eb1a; }
+a.tag[href="#cat/video"]      { color: #b91c1c; background: #b91c1c1a; }
+a.tag[href="#cat/newsletter"] { color: #d97706; background: #d977061a; }
+a.tag[href="#cat/line"]       { color: #16a34a; background: #16a34a1a; }
+a.tag[href="#cat/sns"]        { color: #0284c7; background: #0284c71a; }
+a.tag[href="#cat/event"]      { color: #7c3aed; background: #7c3aed1a; }
+a.tag[href="#cat/image"]      { color: #db2777; background: #db27771a; }
+a.tag[href="#cat/external"]   { color: #6b7280; background: #6b72801a; }
+a.tag[href="#cat/design"]     { color: #9333ea; background: #9333ea1a; }
+a.tag[href="#cat/lp"]         { color: #ea580c; background: #ea580c1a; }
+a.tag[href="#cat/web"]        { color: #0d9488; background: #0d94881a; }
+a.tag[href="#cat/business"]   { color: #4f46e5; background: #4f46e51a; }
+a.tag[href="#cat/dev"]        { color: #334155; background: #3341551a; }
+a.tag[href="#cat/news"]       { color: #ca8a04; background: #ca8a041a; }
+a.tag[href="#cat/book"]       { color: #065f46; background: #065f461a; }
+a.tag[href="#cat/knowledge"]  { color: #7c3aed; background: #7c3aed1a; }
+a.tag[href="#status/active"]  { color: #16a34a; background: #16a34a1a; }
+a.tag[href="#status/legacy"]  { color: #d97706; background: #d977061a; }
+a.tag[href="#status/external"]{ color: #6b7280; background: #6b72801a; }
+
+/* ---------- Bases（テーブル）を少し詰める ---------- */
+.bases-view .bases-table-cell { padding: .35em .6em; }
+
+/* ---------- ページ上部のプロパティ表示をコンパクトに ---------- */
+.rich-doc .metadata-container {
+  font-size: .82em;
+  padding: .3em .9em;
+  margin-bottom: 1em;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  background: var(--background-secondary);
+}
+.rich-doc .metadata-container .metadata-properties-heading { display: none; }
+.rich-doc .metadata-container .metadata-add-button { display: none; }
+.rich-doc .metadata-container .metadata-property { padding: 0; }
+.rich-doc .metadata-container .metadata-property-key { color: var(--text-muted); }
+
+/* ---------- 一覧ページに埋め込んだBasesの高さを抑える ---------- */
+.index-page .bases-embed {
+  display: block;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.index-page .bases-embed .bases-table-container {
+  max-height: 340px;
+  overflow: auto;
+}
+
+/* ---------- ピル内のリンクは下線を消して色を継承 ---------- */
+.rich-doc span[style*="border-radius:999px"] a.internal-link,
+.rich-doc span[style*="border-radius:999px"] a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+}
+.rich-doc span[style*="border-radius:999px"] a:hover { text-decoration: underline; }
+
+/* ---------- 一覧ページの見出しジャンプリンクをピル表示に ----------
+   本文に [[#カテゴリ名]] と素で書くだけで、編集モード・読書モードの
+   どちらでもピルになる（HTML spanで包むと編集モードで生テキストが見えるため） */
+.index-page a.internal-link[data-href^="#"],
+.index-page a.internal-link[href^="#"],
+.index-page .cm-hmd-internal-link {
+  display: inline-block;
+  padding: 1px 10px;
+  margin: 2px 1px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, .12);
+  color: var(--kv-blue);
+  font-weight: 600;
+  font-size: .88em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.index-page a.internal-link[data-href^="#"]:hover,
+.index-page a.internal-link[href^="#"]:hover {
+  background: rgba(37, 99, 235, .22);
+  text-decoration: none;
+}
+
+/* リンクの下線はピル内では出さない（テーマ側の指定を上書き） */
+.index-page a.internal-link[data-href^="#"],
+.index-page a.internal-link[href^="#"],
+.index-page .cm-hmd-internal-link,
+.index-page .cm-hmd-internal-link.cm-underline,
+.index-page .cm-underline { text-decoration: none !important; border-bottom: 0 !important; }
+
+/* Bases埋め込みは本文幅より少し広げて「ひとこと」を読めるようにする */
