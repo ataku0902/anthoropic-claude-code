@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { bar, forecast } from './weather'
+import { bar, forecast, kilo } from './weather'
 
 describe('forecast', () => {
   test('5段階で天気が崩れていく', async () => {
@@ -14,6 +14,12 @@ describe('forecast', () => {
   test('バーの幅は一定', async () => {
     expect(bar(50)).toBe('██████████░░░░░░░░░░')
     expect(bar(150).length).toBe(20)
+  })
+
+  test('トークン数を k で短く書く', async () => {
+    expect(kilo(40000)).toBe('40k')
+    expect(kilo(200000)).toBe('200k')
+    expect(kilo(512)).toBe('512')
   })
 })
 
