@@ -1,23 +1,19 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { bar, forecast, kilo } from './weather'
+import { bar, forecast } from './weather'
 
 describe('forecast', () => {
-  test('turns stormier as the window fills', async () => {
-    expect(forecast(10).label).toBe('Clear')
-    expect(forecast(50).label).toBe('Cloudy')
-    expect(forecast(70).label).toBe('Rain')
-    expect(forecast(90).label).toMatch(/Storm/)
+  test('5段階で天気が崩れていく', async () => {
+    expect(forecast(10).label).toBe('快晴')
+    expect(forecast(40).label).toBe('晴れ')
+    expect(forecast(60).label).toBe('くもり')
+    expect(forecast(80).label).toBe('雨')
+    expect(forecast(90).label).toMatch(/嵐/)
   })
 
-  test('draws a bar of fixed width', async () => {
+  test('バーの幅は一定', async () => {
     expect(bar(50)).toBe('██████████░░░░░░░░░░')
     expect(bar(150).length).toBe(20)
-  })
-
-  test('shortens token counts', async () => {
-    expect(kilo(200000)).toBe('200k')
-    expect(kilo(512)).toBe('512')
   })
 })
 

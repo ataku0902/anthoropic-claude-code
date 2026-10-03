@@ -1,7 +1,7 @@
-export type Fill = { percent: number; tokens: number; window: number }
+export type Percent = number | null
 
 declare module 'claude-code' {
   interface PluginState {
-    'token-weather': { fill: Fill | null }
+    'token-weather': { percent: Percent; hasWarned: boolean }
   }
 }

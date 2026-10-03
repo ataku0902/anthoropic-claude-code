@@ -1,18 +1,25 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { Fill } from '../types'
-import { bar, forecast, kilo } from './weather'
+import { STORM_AT, bar, forecast } from './weather'
 
-const fill = atom({ plugin: 'token-weather', key: 'fill' } as const, null)
+const fill = atom({ plugin: 'token-weather', key: 'percent' } as const, null)
+const hasWarned = atom({ plugin: 'token-weather', key: 'hasWarned' } as const, false)
 
 const refresh = async ($: EngineInterface) => {
   const { context } = await $.session.usage()
-  const next: Fill | null =
-    context.percent === undefined || context.tokens === undefined
-      ? null
-      : { percent: context.percent, tokens: context.tokens, window: context.window }
-  await update($, fill, () => next)
+  const percent = context.percent ?? null
+  await update($, fill, () => percent)
+
+  if (percent === null || percent < STORM_AT) {
+    await update($, hasWarned, () => false)
+    return
+  }
+
+  if (!(await read($, hasWarned))) {
+    await update($, hasWarned, () => true)
+    $.ui.toast(`⛈ 会話の容量が ${percent}% です。/compact を検討してください`)
+  }
 }
 
 export const register: Register = on => {
@@ -38,21 +45,20 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    const now = await read($, fill)
+    const percent = await read($, fill)
 
-    if (e.props.hasSurvey || now === null) {
+    if (e.props.hasSurvey || percent === null) {
       return next(e)
     }
 
     const { Box, Text } = $.ui.resolve(e)
-    const sky = forecast(now.percent)
+    const sky = forecast(percent)
 
     return (
       <Box>
         <Text key="weather" color={sky.color}>
-          {sky.icon} {sky.label} {bar(now.percent)} {now.percent}%
+          {sky.icon} {sky.label} {bar(percent)}
         </Text>
-        <Text dimColor> ({kilo(now.tokens)} / {kilo(now.window)} tokens)</Text>
       </Box>
     )
   })
